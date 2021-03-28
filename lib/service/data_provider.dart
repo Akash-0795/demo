@@ -20,7 +20,7 @@ class DataProvider {
 
   List<User> users;
 
-  void fetchUsers() async {
+  Future<void> fetchUsers() async {
     final url = "https://jsonplaceholder.typicode.com/users";
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
