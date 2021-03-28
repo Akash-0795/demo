@@ -25,8 +25,7 @@ class DataProvider {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      final Iterable json = body["Search"];
-      users = json.map((movie) => User.fromJson(movie)).toList();
+      users = body.map<User>((movie) => User.fromJson(movie)).toList();
       this.userStreamSink.add(users);
     } else {
       throw Exception("Unable to perform request!");

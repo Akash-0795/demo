@@ -4,7 +4,7 @@ import 'package:demo/service/data_provider.dart';
 class UserDetailViewModel {
   User user;
 
-  UserDetailViewModel({this.user});
+  UserDetailViewModel(this.user);
 
   String get name {
     return user.name;
@@ -40,6 +40,6 @@ class UserDetailViewModel {
   }
 
   static UserDetailViewModel getUserDetails(int id) {
-    return UserDetailViewModel(user: DataProvider.sharedInstance.getUser(id));
+    return UserDetailViewModel(DataProvider.sharedInstance.getUser(id));
   }
 }

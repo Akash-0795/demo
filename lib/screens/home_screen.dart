@@ -2,6 +2,8 @@ import 'package:demo/models/user_list_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'details_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
 
@@ -20,25 +22,43 @@ class HomeScreen extends StatelessWidget {
     return StreamBuilder<List<UserListViewModel>>(
         stream: UserListViewModel.usersStream,
         builder: (context, snapshot) {
-          return userList(snapshot.data);
+          if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            default:
+              return userList(context, snapshot.data);
+          }
         });
   }
 
-  Widget userList(List<UserListViewModel> users) {
+  Widget userList(BuildContext context, List<UserListViewModel> users) {
     return ListView(
       children: users
-          .map((e) => Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(e.name),
-                      Text(e.phone),
-                      Text(e.companyName),
-                      Text(e.website),
-                      Icon(Icons.star,
-                          color: e.star ? Colors.yellow : Colors.grey),
-                    ],
+          .map((user) => GestureDetector(
+                key: Key(user.id.toString()),
+                onTap: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DetailScreen(user.id)),
+                  )
+                },
+                child: Card(
+                  margin: const EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(user.name),
+                        Text(user.phone),
+                        Text(user.companyName),
+                        Text(user.website),
+                        Icon(Icons.star, color: user.star ? Colors.yellow : Colors.grey),
+                      ],
+                    ),
                   ),
                 ),
               ))

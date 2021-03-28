@@ -23,22 +23,40 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Text(user.name),
-        SizedBox(height: 5),
-        Text(user.username),
-        SizedBox(height: 5),
-        Text(user.phone),
-        SizedBox(height: 5),
-        Text(user.address),
-        SizedBox(height: 5),
-        Text(user.companyDetails),
-        SizedBox(height: 5),
-        Text(user.website),
-        SizedBox(height: 5),
-        Icon(Icons.star, color: user.star ? Colors.yellow : Colors.grey),
-      ],
-    );
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Details'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            children: [
+              Text(user.name),
+              SizedBox(height: 5),
+              Text(user.username),
+              SizedBox(height: 5),
+              Text(user.phone),
+              SizedBox(height: 5),
+              Text(user.address),
+              SizedBox(height: 5),
+              Text(user.companyDetails),
+              SizedBox(height: 5),
+              Text(user.website),
+              SizedBox(height: 5),
+              Material(
+                child: IconButton(
+                  onPressed: updateStar,
+                  icon: Icon(Icons.star, color: user.star ? Colors.yellow : Colors.grey),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  void updateStar() {
+    setState(() {
+      user.star = !user.star;
+    });
   }
 }

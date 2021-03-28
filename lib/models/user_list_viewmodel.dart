@@ -3,7 +3,11 @@ import 'package:demo/service/data_provider.dart';
 
 class UserListViewModel {
   User user;
-  UserListViewModel({this.user});
+  UserListViewModel(this.user);
+
+  int get id {
+    return user.id;
+  }
 
   String get name {
     return user.name;
@@ -27,9 +31,10 @@ class UserListViewModel {
 
   static Stream<List<UserListViewModel>> get usersStream {
     DataProvider.sharedInstance.fetchUsers();
-    return DataProvider.sharedInstance.userStream
-        .map((event) => event.map((element) {
-              UserListViewModel(user: element);
-            }).toList());
+    return DataProvider.sharedInstance.userStream.map((event) => event
+        .map(
+          (element) => UserListViewModel(element),
+        )
+        .toList());
   }
 }
